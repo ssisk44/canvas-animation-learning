@@ -1,0 +1,1 @@
+This is a repository for various canvas animation projects from this tutorial: https://www.youtube.com/watch?v=uCH1ta5OUHw
