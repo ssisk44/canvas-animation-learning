@@ -13,13 +13,29 @@
 6) alter particle linewidth, visibility, opacity... etc
 7) deal with window resizing !!!!!
 
+COMBOS:
+1)
+let cellSize = 50
+let numParticles = 100000;
+let drawingLineWidth = 2;
+let normalizationRange = 3;
+let particleVelo = 0.5;
+let particleStrokeStyle = 'hsla(0, 0%, 100%, 0.05)';
+background-color: hsla(0, 0%, 0%, 1);
+
+
 */
 let canvas;
 let ctx;
 let flowField;
-let cellSize = 25;
+let cellSize = 50
+let numParticles = 100000;
+let drawingLineWidth = 2;
+let normalizationRange = 3;
+let particleVelo = 0.5;
+let particleStrokeStyle = 'hsla(0, 0%, 100%, 0.05)';
 particles = [];
-numParticles = 25000;
+numParticles = 100000;
 
 canvas = document.getElementById('canvas1');
 ctx = canvas.getContext('2d');
@@ -123,14 +139,13 @@ class Particle {
 		this.x = null;
 		this.y = null;
 		this.velo = 2;
-		this.angle = 0;
+		this.angle = null;
 		this.ctx = ctx;
 	}
 
 	resetParticle(){
 		this.lastX = this.x = Math.random() * ch;
 		this.lastY = this.y = Math.random() * cw;
-		this.velo = 10;
 		// this.angle = null; add in future
 	}
 
@@ -149,12 +164,18 @@ class Particle {
 
 	adjustParticleVelocity(){ // TO DO
 		const gridCellAngle = this.getFlowFieldGridCellAngle();
-		this.angle = gridCellAngle;
+		if (this.angle == null){
+			this.angle = gridCellAngle;
+		} else {
+			this.angle = (this.angle + gridCellAngle * 0.25) / 1.25;
+		}
+		// this.angle = gridCellAngle;
+		
 	}
 
 	draw(){
-		ctx.strokeStyle = 'hsla(260, 75%, 10%, 0.15)';
-		ctx.lineWidth = 2;
+		ctx.strokeStyle = 'hsla(0, 0%, 100%, 0.05)';
+		ctx.lineWidth = 1;
 		ctx.beginPath();
 		ctx.moveTo(this.lastX, this.lastY);
 		this.x = this.lastX + Math.cos(this.angle) * this.velo;
@@ -183,7 +204,6 @@ function animate() {
 		p.lastX = p.x;
 		p.lastY = p.y;
 	}
-	console.log("animating");
 	requestAnimationFrame(this.animate.bind(this))
 }
 animate()
